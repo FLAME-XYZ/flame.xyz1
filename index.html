@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB DASHBOARD & ANALISA CREATED JOO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="sidebar" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="sidebar-menu" id="sidebar-menu">
+    <a href="#" onclick="toggleDarkMode()">Tema DB</a>
+    <a href="#" onclick="toggleMusicList()">Daftar Musik</a>
+    <div id="music-dropdown" class="music-dropdown">
+        <div class="music-item">
+            <a href="#" onclick="playMusic('song1')">JPN REVERB</a>
+            <audio id="song1" src="data/jpn.mp3" controls style="display: none;"></audio>
+        </div>
+        <div class="music-item">
+            <a href="#" onclick="playMusic('song2')">DOIN'TIME</a>
+            <audio id="song2" src="data/dointime.mp3" controls style="display: none;"></audio>
+        </div>
+        <div class="music-item">
+            <a href="#" onclick="playMusic('song3')">STARBOY</a>
+            <audio id="song3" src="data/starboy.mp3" controls style="display: none;"></audio>
+        </div>
+    </div>
+    <a href="#" onclick="showSettings()">Setting</a>
+    <a href="#" onclick="logout()">Log Out</a>
+</div>
+    
+    <div class="container" id="auth-container">
+        <div class="welcome-message">
+            <h1>Selamat Datang</h1>
+        </div>
+        <div id="login-form" class="form-container active">
+            <h2>Login</h2>
+            <form id="login-form-content">
+                <input type="text" id="login-username" placeholder="Username" required>
+                <div class="password-wrapper">
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('login-password')"></i>
+                </div>
+                <button type="button" onclick="login()">Login</button>
+                <div class="link">
+                    <p>Don't have an account? <a href="#" onclick="showForm('register')">Register here</a></p>
+                </div>
+            </form>
+        </div>
+        <div id="register-form" class="form-container">
+            <h2>Register</h2>
+            <form id="register-form-content">
+                <input type="text" id="register-username" placeholder="Username" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <div class="password-wrapper">
+                    <input type="password" id="register-password" placeholder="Password" required>
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('register-password')"></i>
+                </div>
+                <button type="button" onclick="register()">Register</button>
+                <div class="link">
+                    <p>Already have an account? <a href="#" onclick="showForm('login')">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-container" class="dashboard-container" style="display:none;">
+        <div id="home-content" class="content active">
+            <div class="tabs">
+                <a href="#" id="tab-investing" onclick="showIframe('investing')">Investing.com</a>
+                <a href="#" id="tab-forex" onclick="showIframe('forex')">Forex Factory</a>
+            </div>
+            <div id="active-users" style="text-align: center; margin-bottom: 20px;">
+    <h3>Pengguna Aktif: <span id="active-users-count">0</span></h3>
+</div>
+
+            <div id="iframe-container" class="iframe-container">
+                <iframe id="iframe-investing" src="https://m.id.investing.com/economic-calendar/" style="display: none;"></iframe>
+                <iframe id="iframe-forex" src="https://www.forexfactory.com/index.php" style="display: none;"></iframe>
+            </div>
+        </div>
+        <div id="analysis-content" class="content">
+                 <div id="analisis" class="tab-content">
+            <h1>Analisis</h1>
+            <div class="analysis-tools">
+                <label for="analysis-method">Metode Analisis:</label>
+                <select id="analysis-method">
+                    <option value="fibonacci">Fibonacci Retracement</option>
+                    <option value="ict">ICT</option>
+                    <option value="smc">SMC</option>
+                </select>
+                <label for="high-price">High Price:</label>
+                <input type="number" id="high-price" placeholder="High Price" step="0.01">
+                <label for="low-price">Low Price:</label>
+                <input type="number" id="low-price" placeholder="Low Price" step="0.01">
+                <button onclick="performAnalysis()">Lakukan Analisis</button>
+            </div>
+            <div id="analysis-results" class="analysis-results"></div>
+            <div id="buy-advice" class="buy-advice"></div>
+            <div id="sell-advice" class="sell-advice"></div>
+        </div>
+        </div>
+        <div id="market-content" class="content">
+            <div class="chart-container">
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container">
+                    <div id="tradingview_xaudusd"></div>
+                    <div class="tradingview-widget-copyright">
+                        <a href="https://www.tradingview.com/symbols/XAUUSD/" rel="noopener" target="_blank">
+                            <span class="blue-text">XAUUSD Chart</span>
+                        </a> by TradingView
+                    </div>
+                </div>
+                <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                <script type="text/javascript">
+                    new TradingView.widget(
+                    {
+                        "width": "100%",
+                        "height": "100%",
+                        "symbol": "OANDA:XAUUSD",
+                        "interval": "D",
+                        "timezone": "Etc/UTC",
+                        "theme": "dark",
+                        "style": "1",
+                        "locale": "en",
+                        "toolbar_bg": "#f1f3f6",
+                        "enable_publishing": false,
+                        "allow_symbol_change": true,
+                        "container_id": "tradingview_xaudusd"
+                    });
+                </script>
+                <!-- TradingView Widget END -->
+            </div>
+        </div>
+         <div id="income-content" class="content">
+          <div class="logonya">
+
+            <!-- Form input Profit/Loss -->
+            <div class="form-group">
+                <label for="trade-date">Tanggal</label>
+                <input type="date" id="trade-date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="trade-result">Masukan +Profit/-mines</label>
+                <input type="number" id="trade-result" placeholder="Masukkan jumlah profit/loss" required>
+            </div>
+
+            <div class="form-group">
+                <label for="balance">Saldo Income Samakan Jika Beda </label>
+                <input type="number" id="balance" placeholder="Masukkan saldo saat ini" required>
+            </div>
+
+            <button type="button" onclick="addTrade()">Tambah Data</button>
+
+            <!-- Tabel Saldo Saat Ini -->
+            <table class="balance-table">
+                <thead>
+                    <tr>
+                        <th>Semua Income Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="current-balance">0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Tabel riwayat Profit/Loss -->
+            <table id="income-table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Hasil </th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data dari local storage akan diisi di sini -->
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    </div>
+</div>
+        </div>
+<div id="profile-content" class="content">
+    <center>どうにもならないことってあるわ</center>
+    <div class="video-container">
+        <video controls autoplay>
+            <source src="data/video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <!-- Konten profil lainnya bisa Anda tambahkan di sini -->
+</div>
+
+
+    <div class="navbar" id="navbar" style="display:none;">
+        <a href="#" onclick="showPage('home')" class="active">
+            <i class="fas fa-home"></i>
+            Beranda
+        </a>
+        <a href="#" onclick="showPage('analysis')">
+            <i class="fas fa-chart-line"></i>
+            Analisis
+        </a>
+        <a href="#" onclick="showPage('market')">
+            <i class="fas fa-store"></i>
+            Market
+        </a>
+        <a href="#" onclick="showPage('income')">
+            <i class="fas fa-dollar-sign"></i>
+            Income
+        </a>
+        <a href="#" onclick="showPage('profile')">
+            <i class="fas fa-user"></i>
+            Personal
+        </a>
+    </div>
+
+
+    <script src="scripts.js"></script>
+</body>
+</html>
