@@ -31,6 +31,15 @@
                 console.error('Error fetching status:', error);
             });
     }
+    fetch('site_status.json')
+    .then(response => response.json())
+    .then(data => {
+        if (!data.active) {
+            document.body.innerHTML = "<h1>Website sedang tidak aktif.</h1>";
+        } else {
+            // Lanjutkan memuat konten website
+        }
+    });
 
     // Panggil fungsi untuk memeriksa status saat halaman dimuat
     document.addEventListener('DOMContentLoaded', checkWebStatus);
