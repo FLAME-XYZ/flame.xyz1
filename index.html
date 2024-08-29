@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Web</title>
+</head>
+<body>
+    <div id="status-message" style="text-align: center; margin-top: 50px;">
+        <h1>Memeriksa status web...</h1>
+    </div>
+</body>
+</html>
+<script>
+    const pastebinUrl = 'https://pastebin.com/raw/fPN5S3Z0'; // Ganti dengan URL RAW Pastebin Anda
+
+    function checkWebStatus() {
+        fetch(pastebinUrl)
+            .then(response => response.text())
+            .then(status => {
+                const statusMessage = document.getElementById('status-message');
+                if (status.trim() === 'active') {
+                    statusMessage.innerHTML = '<h1>Web Aktif</h1><p>Selamat datang di situs web kami!</p>';
+                } else {
+                    statusMessage.innerHTML = '<h1>Web Nonaktif</h1><p>Situs web ini sedang tidak aktif.</p>';
+                }
+            })
+            .catch(error => {
+                const statusMessage = document.getElementById('status-message');
+                statusMessage.innerHTML = '<h1>Error</h1><p>Gagal memeriksa status web.</p>';
+                console.error('Error fetching status:', error);
+            });
+    }
+
+    // Panggil fungsi untuk memeriksa status saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', checkWebStatus);
+              </script>
+              
